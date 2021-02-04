@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Number Guessing Game</title>
+        <style>
+            html{
+                font-family: sans-serif;
+            }
+            body{
+                width:50%;
+                max-width: 800px;
+                min-width: 480px;
+                margin: 0 auto;
+            }
+            .lastResult{
+                color:white;
+                padding:3px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Number Guessing Game</h1>
+        <p>We have selected a random number between 1 and 100. See if you can guess it in 10 turns or fewer. We'll tell you if your guess was too high or too low.</p>
+
+        <div class="form">
+            <label for="guessField">Enter a guess: </label>
+            <input type="text" id="guessField" class="guessField"><!-- input number-->
+            <input type="submit" value="Submit guess" class="guessSubmit"><!--button-->
+        </div>
+        <div class="resultParas">
+            <p class="guesses"></p> <!--previous guesses-->
+            <p class="lastResult"></p> <!--wrong/right-->
+            <p class="lowOrHi"></p> <!--low/high-->
+        </div>
+        
+        <script>
+            var randomNumber = Math.floor(Math.random()*100)+1; //1~100사이 난수 발생
+
+
+            //querySelector(): CSS 선택자에 해당하는 정보를 가져옴
+            //추가될 부분들
+            var guesses=document.querySelector('.guesses');
+            var lastResult=document.querySelector('.lastResult');
+            var lowOrHi=document.querySelector('.lowOrHi');
+
+            //입력, 버튼
+            var guessSubmit=document.querySelector('.guessSubmit');
+            var guessField=document.querySelector('.guessField');
+
+            var guessCount=1; //guess count
+            var resetButton; //button reset variable
+            guessField.focus();//입력 필드에 초점부여
+
+            function checkGuess(){
+
+                //현재 입력된 값을 userGuess 변수값으로 지정
+                var userGuess=Number(guessField.value);
+                //Number객체 : 숫자값으로 작업할 수 있게 해주는 wrapper 객체
+                //Number() 생성자 통해 만듦
+                //매개변수 value : 생성할 객체의 숫자값
+
+                if(guessCount===1){//game이 처음일때
+                    guesses.textContent='Previous guesses: ';
+                }
+                guesses.textContent+=userGuess+" ";
+                //textContent: 텍스트 추가 property
+
+                if(userGuess===randomNumber){ //정답 맞췄을때
+                    lastResult.textContent='Congratulations! You got it right!'; //텍스트 변경
+                    lastResult.style.backgroundColor='green'; //배경색 변경
+                    lowOrHi.textContent=''; 
+                    setGameOver(); //게임종료 함수
+                } else if(guessCount===10){ //count 초과
+                    lastResult.textContent='!!!GAME OVER!!!';
+                    setGameOver();
+                }else{ //틀렸을때
+                    lastResult.textContent="Wrong!";
+                    lastResult.style.backgroundColor='red';
+                    if(userGuess<randomNumber){ //low
+                        lowOrHi.textContent='Last guess was too low!';
+                    } else if(userGuess>randomNumber){ //high
+                        lowOrHi.textContent='Last guess was too high!';
+                    }
+                }
+
+                guessCount++; //count 추가
+                guessField.value=''; //텍스트 필드란 비우기
+                //value property를 통해 속성 전체에 접근
+                guessField.focus(); //커서를 input text로 위치
+            }
+
+            //event listeners: 발생된 이벤트를 처리
+            //event handlers: 이벤트가 발생했을때 실행되는 코드블록
+
+            guessSubmit.addEventListener('click', checkGuess);
+            //guessSubmit 버튼에 event listener 추가
+            //addEventListener() : 2개의 입력 가짐. 문자열로서 click을 처리하는 이벤트, 이벤트가 발생하면 checkGuess()함수 실행
+            //addEventListener()안에서는 함수의 ()가 필요없다!
+
+            function setGameOver(){
+                //input 태그의 disabled 속성 : 비활성화. 클릭, 사용할 수 없다.
+                guessField.disabled=true;
+                guessSubmit.disabled=true;
+
+                //createElement(): 지정한 태그이름의 HTML 요소를 만들어 반환
+                resetButton=document.createElement('button');
+                resetButton.textContent='Start New Game';
+                //document.body.appendChild(): body의 자식 요소로 resetButton을 넣음
+                document.body.appendChild(resetButton);
+
+                //클릭하면 resetGame()함수가 실행
+                resetButton.addEventListener('click', resetGame);
+            }
+
+            function resetGame(){ //게임 초기화 함수
+                guessCount=1;
+
+                //querySelectAll(): 특정 CSS 선택자를 가진 모든 요소를 배열로 가져오는 메소드
+                var resetParas=document.querySelectAll('.resultParas p'); //resultParas class의 자손인 p태그들을 모두 배열로 가져옴
+
+                for(var i=0; i<resetParas.length; i++){
+                    resetParas[i].textContent=''; //모두 초기화
+                }
+
+                //부모노드.removeChild(delNode);
+                //자식노드를 삭제. 삭제되는 자식노드를 가진 부모 노드로부터 호출되어야한다.
+                resetButton.parentNode.removeChild(resetButton); //초기화 버튼 코드 제거
+
+                guessField.disabled=false;
+                guessSubmit.disabled=false;
+                guessField.value='';
+                guessField.focus();
+
+                lastResult.style.backgroundColor='white';
+
+                randomNumber=Math.floor(Math.random()*100)+1; //새 난수 설정
+                
+            }
+
+
+        </script>
+
+    </body>
+</html>
