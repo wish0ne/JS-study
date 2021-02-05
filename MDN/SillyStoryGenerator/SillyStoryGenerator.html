@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width">
+        <!--기기에 따라 달라지는 화면 너비에 맞게 웹페이지의 너비를 설정-->
+        <title>Silly Story Generator</title>
+        <style>
+            body{
+                font-family: Helvetica, sans-serif;
+                width:350px;
+            }
+
+            label{
+                font-weight: bold;
+            }
+
+            div{
+                padding-bottom: 20px;
+            }
+
+            input[type="text"]{
+                padding:5px;
+                width:150px;
+            }
+
+            p{
+                background:#ffc125;
+                color:#5e2612;
+                padding:10px;
+                visibility:hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <label for="customname">Enter custom name:</label>
+            <input id="customname" type="text" placeholder="">
+        </div>
+        <div>
+            <label for="us">US</label><input id="us" type="radio" name="ukus" value="us" checked>
+            <label for="uk">UK</label><input id="uk" type="radio" name="ukus" value="uk">
+        </div>
+        <div>
+            <button class="randomize">Generate random story</button>
+        </div>
+        <p class="story"></p>
+
+        <script type="text/javascript" src="main.js"></script>
+
+    </body>
+</html>
