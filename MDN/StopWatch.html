@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <title>Simple setInterval clock</title>
+    <style>
+      p {
+        font-family: sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <p class="clock"></p>
+    <button class="start">Start</button>
+    <button class="stop">Stop</button>
+    <button class="reset">Reset</button>
+    <script>
+      let second=0;
+      let minute=0;
+      let hour=0;
+      const start=document.querySelector('.start');
+
+      start.onclick=function(){
+        let startTime=Date.now();
+        displayTime(startTime);
+        const createClock = setInterval(displayTime, 1000, startTime); //요기 파라미터로 전달안해주니까 NaN발생
+      }
+      
+      function displayTime(startTime){
+        let second=Date.now()-startTime;
+        second=Math.floor(second*0.001);
+        second+=1;
+
+        
+        hour=minute/60;
+        minute=minute%60;
+        minute=second/60;
+        second=second%60;
+        
+        hour=Math.floor(hour);
+        minute=Math.floor(minute);
+        second=Math.floor(second);
+
+        let string=String(hour+':'+minute+':'+second);
+        document.querySelector('.clock').textContent=string;
+      }
+
+      
+    </script>
+  </body>
+</html>
