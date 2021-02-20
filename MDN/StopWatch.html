@@ -11,23 +11,52 @@
   </head>
   <body>
     <p class="clock"></p>
-    <button class="start">Start</button>
-    <button class="stop">Stop</button>
-    <button class="reset">Reset</button>
+    <button class="Start">Start</button>
+    <button class="Stop">Stop</button>
+    <button class="Reset">Reset</button>
     <script>
       let second=0;
       let minute=0;
       let hour=0;
-      const start=document.querySelector('.start');
+      let string=String(hour+':'+minute+':'+second);
 
-      start.onclick=function(){
-        let startTime=Date.now();
-        displayTime(startTime);
-        const createClock = setInterval(displayTime, 1000, startTime); //요기 파라미터로 전달안해주니까 NaN발생
+      const Start=document.querySelector('.Start');
+      const Stop=document.querySelector('.Stop');
+      const Reset=document.querySelector('.Reset');
+
+      let createClock=setInterval(First);
+    
+      Start.onclick=function(){
+        let StartTime=Date.now();
+        displayTime(StartTime);
+        createClock = setInterval(displayTime, 1000, StartTime); //요기 파라미터로 전달안해주니까 NaN발생
+        Start.disabled=true;
+
+      }
+
+      Stop.onclick=function(){
+          Start.disabled=false;
+          clearInterval(createClock);
+          //stop이후 재시작할때 기능 추가
+      }
+
+      Reset.onclick=function(){
+        Start.disabled=false;
+        clearInterval(createClock);
+        second=minute=hour=0;
+
+        string=String(hour+':'+minute+':'+second)
+        document.querySelector('.clock').textContent=string;
+        
+      }
+
+      function First(){
+        document.querySelector('.clock').textContent=string;
       }
       
-      function displayTime(startTime){
-        let second=Date.now()-startTime;
+      
+      function displayTime(StartTime){
+        let second=Date.now()-StartTime;
         second=Math.floor(second*0.001);
         second+=1;
 
@@ -41,7 +70,7 @@
         minute=Math.floor(minute);
         second=Math.floor(second);
 
-        let string=String(hour+':'+minute+':'+second);
+        string=String(hour+':'+minute+':'+second)
         document.querySelector('.clock').textContent=string;
       }
 
