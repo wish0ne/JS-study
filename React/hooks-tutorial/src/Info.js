@@ -1,51 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useReducer } from "react";
+
+function reducer(state, action) {
+  return {
+    ...state,
+    [action.name]: action.value, //e.target.name : e.target.value
+  };
+}
 
 const Info = () => {
-  const [name, setName] = useState("");
-  const [nickname, setNickname] = useState("");
+  const [state, dispatch] = useReducer(reducer, { name: "", nickname: "" });
+  const { name, nickname } = state;
 
-  //컴포넌트가 언마운트되기전 & 업데이트 되기 직전에 작업 수행 -> cleanup 함수 반환
-  useEffect(() => {
-    console.log("effect");
-    console.log(name);
-    return () => {
-      console.log("cleanup");
-      console.log(name);
-    };
-  }, [name]); //오직 언마운트될때만 cleanup함수 호출하고 싶다면 빈배열
-
-  //렌더링될때마다 실행
-  // useEffect(() => {
-  //   console.log("렌더링이 완료되었습니다!");
-  //   console.log({
-  //     name,
-  //     nickname,
-  //   });
-  // });
-
-  //마운트될때만 실행
-  // useEffect(()=>{
-  //   console.log('마운트될때만 실행됩니다.')
-  // },[])
-
-  //특정 값이 업데이트될때만 실행
-  // useEffect(()=>{
-  //   console.log(name)
-  // },[name])
-
-  const onChangeName = (e) => {
-    setName(e.target.value);
-  };
-
-  const onChangeNickname = (e) => {
-    setNickname(e.target.value);
+  //useReducer에서 action은 어떤값도 사용가능. 여기서는 이벤트 객체가 지니고 있는 e.target값 자체를 액션값으로 사용
+  //이런식으로 인풋을 관리하면 인풋의 개수가 많아져도 코드를 짧고 깔끔하게 유지가능!
+  const onChange = (e) => {
+    dispatch(e.target);
   };
 
   return (
     <div>
       <div>
-        <input value={name} onChange={onChangeName} />
-        <input value={nickname} onChange={onChangeNickname} />
+        <input name="name" value={name} onChange={onChange} />
+        <input name="nickname" value={nickname} onChange={onChange} />
       </div>
       <div>
         <div>
