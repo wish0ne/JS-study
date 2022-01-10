@@ -1,0 +1,52 @@
+//SCSS 주석은 2가지
+//컴파일되지 않는 주석
+/* 컴파일되는 주석 */
+
+//데이터 종류
+//Numbers, Strings, Colors, Booleans, Nulls(아무것도 없음), Lists(공백이나 ,로 구분된 값의 목록), Maps(key:value 형태)
+
+@import "./styles/utils.scss"; //변수와 믹스인을 utils로 분리한뒤 불러와서 사용.
+
+.SassComponent {
+  display: flex;
+  .box {
+    //일반 CSS에서는 .SassComponent .box와 마찬가지. 중첩기능
+    background: red;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+    &.red {
+      //중첩 안에서 &는 상위(부모) 선택자를 참조하여 치환한다. 즉 .box.red
+      //.red 클래스가 .box와 함께 사용되었을때
+      background: $red;
+      @include square(1); //선언된 mixin을 사용하기 위해서 @include 사용.
+    }
+    &.orange {
+      background: $orange;
+      @include square(2);
+    }
+    &.yellow {
+      background: $yellow;
+      @include square(3);
+    }
+    &.green {
+      background: $green;
+      @include square(4);
+    }
+    &.blue {
+      background: $blue;
+      @include square(5);
+    }
+    &.indigo {
+      background: $indigo;
+      @include square(6);
+    }
+    &.violet {
+      background: $violet;
+      @include square(7);
+    }
+    &:hover {
+      //.box에 마우스 올렸을때
+      background: black;
+    }
+  }
+}
