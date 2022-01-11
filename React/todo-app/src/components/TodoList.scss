@@ -1,0 +1,11 @@
+.TodoList {
+  min-height: 320px;
+  max-height: 513px;
+  overflow-y: auto;
+  //overflow: 내용이 넘칠때 어떻게 보일지 선택할 수 있는 속성
+  //overflow-y : y축 내용이 넘칠때 어떻게 보여줄지 지정
+  //visible : 내용이 잘리지 않고 넘치는 내용은 밖으로 흘러넘침
+  //hidden : 넘치는 내용이 잘림. 스크롤바 x
+  //scroll : 내용이 잘림. 항상 스크롤바 나타남.
+  //auto : 내용이 잘림. 필요할때만 스크롤바가 나타남.
+}

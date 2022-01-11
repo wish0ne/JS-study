@@ -1,0 +1,22 @@
+.TodoTemplate {
+  width: 512px;
+  // width가 주어진 상태에서 좌우 중앙 정렬
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 6rem; //rem : html 요소의 크기의 몇배인지로 크기를 정함. html요소 크기의 기본값은 웹브라우저 설정에서 정한 글자 크기. 보통 16px
+  border-radius: 4px;
+  overflow: hidden; //넘친 콘텐츠는 잘려지고 보이지 않음.
+  .app-title {
+    background: #22b8cf;
+    color: white;
+    height: 4rem;
+    font-size: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    display: flex; //flex에 대해 자세히 알고싶다면 Flexbox Froggy 사이트 참고
+  }
+
+  .content {
+    background: white;
+  }
+}
