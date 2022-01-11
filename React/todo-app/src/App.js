@@ -41,10 +41,19 @@ const App = () => {
     [todos],
   );
 
+  //id를 파라미터로 받아와서 같은 id를 가진 항목을 todos 배열에서 지우는 함수
+  //배열의 불변성을 지키면서 배열 원소 제거하기 위해 filter함수 사용
+  const onRemove = useCallback(
+    (id) => {
+      setTodos(todos.filter((todo) => todo.id !== id));
+    },
+    [todos],
+  );
+
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} onRemove={onRemove} />
     </TodoTemplate>
   );
 };
