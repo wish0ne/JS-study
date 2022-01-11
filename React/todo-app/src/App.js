@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useReducer, useRef, useCallback } from 'react';
 import TodoTemplate from './components/TodoTemplate';
 import TodoInsert from './components/TodoInsert';
 import TodoList from './components/TodoList';
@@ -16,10 +16,30 @@ function createBulkTodos() {
   return array;
 }
 
+//useReducer를 사용해도 함수가 계속 새로워지는 문제 해결할 수 있음.
+//장점 : 상태를 업데이트 하는 로직을 모아서 컴포넌트 바깥에 둘 수 있음.
+function todoReducer(todos, action) {
+  //상태, 액션
+  switch (action.type) {
+    case 'INSERT': //새로 추가
+      //{type:'INSERT', todo:{id:1, text:'todo', checked:false}}
+      return todos.concat(action.todo);
+    case 'REMOVE': //제거
+      //{type:'REMOVE', id:1}
+      return todos.filter((todo) => todo.id !== action.id);
+    case 'TOGGLE': //토글
+      //{tyle:'TOGGLE', id:1}
+      return todos.map((todo) =>
+        todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
+      );
+    default:
+      return todos;
+  }
+}
+
 //일정 항목에 대한 상태들은 모두 App에서 관리 (부모 컴포넌트에서)
 const App = () => {
-  //파라미터로 createBulkTodos()라고 넣어주면 리렌더링할때마다 함수가 호출되지만, 아래처럼 넣어주면 컴포넌트가 처음 리렌더링될때만 함수가 실행됨.
-  const [todos, setTodos] = useState(createBulkTodos);
+  const [todos, dispatch] = useReducer(todoReducer, undefined, createBulkTodos); //컴포넌트가 맨 처음 렌더링될때만 createBulkTodos 함수 호출하기 위해 두번째 파라미터에 undefined를 넣음.
 
   //고유값으로 사용될 id. ref를 사용하여 변수담기
   //id값은 렌더링되는 정보가 아니므로 useRef를 사용하여 변수 생성
@@ -32,14 +52,14 @@ const App = () => {
       text,
       checked: false,
     };
-    setTodos((todos) => todos.concat(todo));
+    dispatch({ type: 'INSERT', todo });
     nextId.current += 1;
   }, []);
 
   //id를 파라미터로 받아와서 같은 id를 가진 항목을 todos 배열에서 지우는 함수
   //배열의 불변성을 지키면서 배열 원소 제거하기 위해 filter함수 사용
   const onRemove = useCallback((id) => {
-    setTodos((todos) => todos.filter((todo) => todo.id !== id)); //함수형 업데이트 통해 배열에 todos 안넣어도됨 -> todos 바뀔때마다 onRemove 함수 안바껴도 됨.
+    dispatch({ type: 'REMOVE', id });
   }, []);
 
   //토글 기능 구현
@@ -47,11 +67,7 @@ const App = () => {
 
   const onToggle = useCallback((id) => {
     //id값이 같을때만 새로운 객체 생성, 다를때는 처음 받아왔던 상태 그대로 반환.
-    setTodos((todos) =>
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-      ),
-    );
+    dispatch({ type: 'TOGGLE', id });
   }, []);
 
   return (
