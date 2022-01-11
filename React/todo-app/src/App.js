@@ -50,10 +50,25 @@ const App = () => {
     [todos],
   );
 
+  //토글 기능 구현
+  //불변성을 유지하면서 특정 배열 원소 업데이트하기 위해 map 사용
+
+  const onToggle = useCallback(
+    (id) => {
+      //id값이 같을때만 새로운 객체 생성, 다를때는 처음 받아왔던 상태 그대로 반환.
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+        ),
+      );
+    },
+    [todos],
+  );
+
   return (
     <TodoTemplate>
       <TodoInsert onInsert={onInsert} />
-      <TodoList todos={todos} onRemove={onRemove} />
+      <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
     </TodoTemplate>
   );
 };
