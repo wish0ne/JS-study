@@ -16,12 +16,12 @@ const App = () => {
       // console.log(e.target.value);
       const { name, value } = e.target; //e.target.name, e.target.value
       setForm(
-        produce(form, (draft) => {
+        produce((draft) => {
           draft[name] = value;
         })
       );
     },
-    [form]
+    [] //함수형 업데이트 사용해서 배열에 forms 안넣어도 됨.
   );
 
   //form 등록을 위한 함수
@@ -35,7 +35,7 @@ const App = () => {
       };
       //array에 새 항목 등록
       setData(
-        produce(data, (draft) => {
+        produce((draft) => {
           draft.array.push(info);
         })
       );
@@ -48,25 +48,22 @@ const App = () => {
 
       nextId.current += 1;
     },
-    [data, form.name, form.username]
+    [form.name, form.username]
   );
 
   //항목 삭제
   //onRemove의 경우 filter을 사용하는것이 코드가 더 깔끔하므로, 굳이 immer를 적용할 필요 없음.
   //immer는 불변성 유지하는 코드가 복잡할때만 사용해도 충분.
-  const onRemove = useCallback(
-    (id) => {
-      setData(
-        produce(data, (draft) => {
-          draft.array.splice(
-            draft.array.findIndex((info) => info.id === id),
-            1
-          );
-        })
-      );
-    },
-    [data]
-  );
+  const onRemove = useCallback((id) => {
+    setData(
+      produce((draft) => {
+        draft.array.splice(
+          draft.array.findIndex((info) => info.id === id),
+          1
+        );
+      })
+    );
+  }, []);
 
   return (
     <div>
