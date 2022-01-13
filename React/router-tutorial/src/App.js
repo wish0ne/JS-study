@@ -6,6 +6,9 @@ import Profile from "./Profile";
 import Articles from "./Articles";
 import Article from "./Article";
 import Layout from "./Layout";
+import NotFound from "./NotFound";
+import Login from "./Login";
+import MyPage from "./MyPage";
 
 //Route 컴포넌트로 특정 주소에 컴포넌트 연결
 //Route 컴포넌트를 사용하여 어떤 규칙을 가진 경로에 어떤 컴포넌트를 보여줄지 정의할 수 있음.
@@ -32,6 +35,10 @@ const App = () => {
       <Route path="/articles" element={<Articles />}>
         <Route path=":id" element={<Article />} />
       </Route>
+      <Route path="/login" element={<Login />} />
+      <Route path="mypage" element={<MyPage />} />
+      {/* *는 wildcard 문자로 아무 텍스트나 매칭한다는 뜻. 이 라우트 엘리먼트의 상단에 위치하는 라우트들의 규칙을 모두 확인하고, 일치하는 라우트가 없으면 이 라우트가 화면에 나타나게 됨. */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
