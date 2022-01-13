@@ -1,8 +1,11 @@
 import React from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import Profile from "./Profile";
+import Articles from "./Articles";
+import Article from "./Article";
+import Layout from "./Layout";
 
 //Route 컴포넌트로 특정 주소에 컴포넌트 연결
 //Route 컴포넌트를 사용하여 어떤 규칙을 가진 경로에 어떤 컴포넌트를 보여줄지 정의할 수 있음.
@@ -13,31 +16,23 @@ import Profile from "./Profile";
 
 const App = () => {
   return (
-    <div>
-      <ul>
-        <li>
-          <Link to="/">홈</Link>
-        </li>
-        <li>
-          <Link to="/about">소개</Link>
-        </li>
-        <li>
-          <Link to="/profiles/gildong">gildong의 프로필</Link>
-        </li>
-        <li>
-          <Link to="/profiles/velopert">velopert의 프로필</Link>
-        </li>
-        <li>
-          <Link to="/profiles/void">존재하지 않는 프로필</Link>
-        </li>
-      </ul>
-      <Routes>
-        <Route path="/" element={<Home />} />
+    <Routes>
+      {/* 공통 레이아웃 컴포넌트 */}
+      <Route path="/" element={<Layout />}>
+        {/* index props는 path="/"와 동일한 의미. */}
+        {/* index props는 상위 라우트의 경로와 일치하지만, 그 이후에 경로가 주어지지 않았을때 보여지는 라우트를 설정할때 사용. */}
+        {/* path="/"와 동일한 역할을 하며 이를 좀 더 명시적으로 표현하는 방법. */}
+        <Route index element={<Home />} />
         <Route path="/about" element={<About />} />
         {/* URL 파라미터는 경로에 :를 사용하여 설정. 만약 URL 파라미터가 여러개라면 /profile:/username:/field와 같은 형태로 설정가능 */}
         <Route path="/profiles/:username" element={<Profile />} />
-      </Routes>
-    </div>
+      </Route>
+      {/* 중첩된 라우트 형태로 라우트 설정 */}
+      {/* Articles 컴포넌트에서 Outlet 컴포넌트를 사용해줘야함. */}
+      <Route path="/articles" element={<Articles />}>
+        <Route path=":id" element={<Article />} />
+      </Route>
+    </Routes>
   );
 };
 
