@@ -17,7 +17,7 @@ const NewsListBlock = styled.div`
   }
 `;
 
-const NewsList = () => {
+const NewsList = ({ category }) => {
   const [articles, setArticles] = useState(null);
   //loading 상태를 통해 API 요청이 대기중인지 판별.
   const [loading, setLoading] = useState(false);
@@ -30,8 +30,9 @@ const NewsList = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const query = category === 'all' ? '' : `&category=${category}`;
         const response = await axios.get(
-          'https://newsapi.org/v2/top-headlines?country=kr&apiKey=d3d28ade4d0640628688e7fdb8663866',
+          `https://newsapi.org/v2/top-headlines?country=kr${query}&apiKey=d3d28ade4d0640628688e7fdb8663866`,
         );
         setArticles(response.data.articles);
       } catch (e) {
@@ -40,7 +41,7 @@ const NewsList = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [category]); //cateogry값이 바뀔때마다 뉴스를 새로 불러와야하므로 의존배열에 category 넣어줌.
 
   //대기중일때
   if (loading) {
