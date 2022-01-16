@@ -1,25 +1,17 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ColorBox from "./components/ColorBox";
+import ColorContext from "./contexts/color";
 
-function App() {
+//Provider를 사용하면 Context의 value 변경 가능.
+//Provider를 사용할때는 value값을 명시해주어야 제대로 작동한다는것 유의!
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ColorContext.Provider value={{ color: "red" }}>
+      <div>
+        <ColorBox />
+      </div>
+    </ColorContext.Provider>
   );
-}
+};
 
 export default App;
