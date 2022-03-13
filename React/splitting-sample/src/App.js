@@ -1,30 +1,32 @@
+import React, { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-//import notify from "./notify";
 
-function App() {
-  //이렇게 작성하고 빌드하면 notify 코드가 main파일 안에 들어감.
-  // const onClick = () => {
-  //   notify();
-  // };
-
-  //import를 상단에서 하지 않고 import()함수 형태로 메서드 안에서 사용하면 파일을 따로 분리시켜 저장함.
-  //그리고 실제 함수가 필요한 시점에 파일을 불러와서 함수 사용 간으.
-  const onClick = () => {
-    //import를 함수로 사용하면 Promise를 반환함.
-    //import를 함수로 사용하는 문법은 표준 자바스크립트는 아님. stage-3단계에 있는 dynamic import 문법.
-    //웹팩에서 지원하고 있으므로 바로 사용가능.
-    //이 함수를 통해 모듈을 불러올때 default로 내보낸것은 result.default를 참조해야 사용가능.
-    import("./notify").then((result) => result.default());
+//state를 사용한 코드 스플리팅 (매번 state를 선언해주어야 하는 점이 불편)
+class App extends Component {
+  state = {
+    SplitMe: null,
   };
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p onClick={onClick}>Hello React!</p>
-      </header>
-    </div>
-  );
+  handleClick = async () => {
+    //SplitMe 컴포넌트를 불러와 state에 넣음.
+    const loadedModule = await import("./SplitMe");
+    this.setState({
+      SplitMe: loadedModule.default,
+    });
+  };
+  render() {
+    const { SplitMe } = this.state;
+    //state의 SplitMe가 유효하면 SplitMe 컴포넌트 렌더링
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p onClick={this.handleClick}>Hello React!</p>
+          {SplitMe && <SplitMe />}
+        </header>
+      </div>
+    );
+  }
 }
 
 export default App;
