@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Users from "../components/Users";
 import { connect } from "react-redux";
 import { getUsers } from "../modules/users";
+import { Preloader } from "../lib/PreloadContext";
 
 const UsersContainer = ({ users, getUsers }) => {
   //컴포넌트가 마운트 되고 나서 호출
@@ -10,7 +11,13 @@ const UsersContainer = ({ users, getUsers }) => {
     getUsers();
   }, [getUsers, users]);
 
-  return <Users users={users} />;
+  //컴포넌트가 렌더링될때만 resolve 함수 호출
+  return (
+    <>
+      <Users users={users} />
+      <Preloader resolve={getUsers} />
+    </>
+  );
 };
 
 export default connect(
