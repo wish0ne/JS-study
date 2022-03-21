@@ -11,6 +11,9 @@ const Menu = () => {
         <li>
           <Link to="/blue">Blue</Link>
         </li>
+        <li>
+          <Link to="/users">Users</Link>
+        </li>
       </ul>
       <hr />
       <Outlet />
