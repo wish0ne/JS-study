@@ -41,7 +41,6 @@ function createPage(root, stateScript) {
       ${root}
     </div>
     ${stateScript}
-    <script src="${manifest.files["runtime-main.js"]}"></script>
     ${chunks}
     <script src="${manifest.files["main.js"]}"></script>
   </body>
@@ -52,7 +51,7 @@ function createPage(root, stateScript) {
 const app = express();
 
 //서버 사이드 렌더링을 처리할 핸들러 함수
-const serverRender = (req, res, next) => {
+const serverRender = async (req, res, next) => {
   //이 함수는 404가 떠야 하는 상황에 404를 띄우지 않고 서버 사이드 렌더링을 해줌
   const context = {};
   const store = createStore(rootReducer, applyMiddleware(thunk));

@@ -6,13 +6,13 @@ const Menu = () => {
     <>
       <ul>
         <li>
-          <Link to="/red">Red</Link>
+          <Link to="red">Red</Link>
         </li>
         <li>
-          <Link to="/blue">Blue</Link>
+          <Link to="blue">Blue</Link>
         </li>
         <li>
-          <Link to="/users">Users</Link>
+          <Link to="users">Users</Link>
         </li>
       </ul>
       <hr />
