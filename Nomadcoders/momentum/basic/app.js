@@ -73,3 +73,34 @@ window.addEventListener("resize", handleWindowResize);
 window.addEventListener("copy", handleWindowCopy);
 window.addEventListener("offline", handleWindowOffline);
 window.addEventListener("online", handleWindowOnline);
+
+//3.6 CSS in Javascript
+const css = document.querySelector(".css");
+function handleCSSClick() {
+  const currentColor = css.style.color;
+  let newColor;
+  if (currentColor === "blue") {
+    newColor = "tomato";
+  } else {
+    newColor = "blue";
+  }
+  css.style.color = newColor;
+  console.log(newColor);
+}
+css.addEventListener("click", handleCSSClick);
+
+//하지만 스타일은 js가 아니라 css에서 관리하는게 더 좋다
+//className / classList로 html의 class 조작가능
+const style = document.querySelector(".style");
+function handleStyleClick() {
+  // const activeClass = "active";
+  // if (style.classList.contains(activeClass)) {
+  //   style.classList.remove(activeClass);
+  // } else {
+  //   style.classList.add(activeClass);
+  // }
+
+  //위와 같은 코드
+  style.classList.toggle("active");
+}
+style.addEventListener("click", handleStyleClick);
