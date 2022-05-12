@@ -6,7 +6,7 @@ function sayHello() {
   console.log("hi");
 }
 //setInterval(sayHello, 5000);
-setTimeout(sayHello, 5000);
+//setTimeout(sayHello, 5000);
 
 //Date 객체
 function getClock() {
