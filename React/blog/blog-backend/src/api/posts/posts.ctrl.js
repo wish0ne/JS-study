@@ -79,19 +79,26 @@ export const write = async (ctx) => {
 GET /api/posts
 */
 export const list = async (ctx) => {
+  //query는 문자열이므로 숫자로 변환해야함
+  //page값이 주어지지 않았다면 1페이지로 간주
+  const page = parseInt(ctx.query.page || '1', 10);
+
+  if (page < 1) {
+    ctx.status = 400;
+    return;
+  }
+
+  const { tag, username } = ctx.query;
+  //tag, username 값이 유효하면 객체안에 넣고, 그렇지 않으면 넣지않음
+  const query = {
+    ...(username ? { 'user.username': username } : {}),
+    ...(tag ? { tags: tag } : {}),
+  };
+
   try {
-    //query는 문자열이므로 숫자로 변환해야함
-    //page값이 주어지지 않았다면 1페이지로 간주
-    const page = parseInt(ctx.query.page || '1', 10);
-
-    if (page < 1) {
-      ctx.status = 400;
-      return;
-    }
-
     //find()로 모델 인스턴스의 데이터 조회
     //find()호출 후 exec()를 붙여줘야 서버에 쿼리를 요청함.
-    const posts = await Post.find()
+    const posts = await Post.find(query)
       .sort({ _id: -1 })
       .limit(10)
       .skip((page - 1) * 10)
@@ -101,7 +108,7 @@ export const list = async (ctx) => {
     //skip으로 처음 10개씩 제외하고 그 다음 데이터를 보여줌
 
     //Last-Page라는 커스텀 HTTP 헤더를 통해 마지막 페이지 번호 알려줌
-    const postCount = await Post.countDocuments().exec();
+    const postCount = await Post.countDocuments(query).exec();
     ctx.set('Last-Page', Math.ceil(postCount / 10));
 
     //내용 200자 제한
